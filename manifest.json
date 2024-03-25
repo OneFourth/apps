@@ -12,11 +12,11 @@
       "sizes": "512x512"
     }
   ],
-  "id": "/?source=pwa",
-  "start_url": "/?source=pwa",
+  "id": "/apps/?source=pwa",
+  "start_url": "/apps/?source=pwa",
   "background_color": "#000000",
   "display": "standalone",
-  "scope": "/",
+  "scope": "/apps",
   "theme_color": "#000000",
   "shortcuts": [],
   "description": "Apps",

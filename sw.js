@@ -29,13 +29,13 @@ const cacheFirst = async ({ request, preloadResponsePromise }) => {
 self.addEventListener('install', (event) => {
     event.waitUntil(
         addResourcesToCache([
-            '/',
-            '/app.js',
-            '/images/icons-192.png',
-            '/images/icons-512.png',
-            '/index.html',
-            '/styles.css',
-            '/manifest.json',
+            '/apps/',
+            '/apps/app.js',
+            '/apps/images/icons-192.png',
+            '/apps/images/icons-512.png',
+            '/apps/index.html',
+            '/apps/styles.css',
+            '/apps/manifest.json',
         ])
     );
 });
