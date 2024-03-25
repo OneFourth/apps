@@ -9,20 +9,20 @@ const putInCache = async (request, response) => {
 };
 
 const cacheFirst = async ({ request, preloadResponsePromise }) => {
-    const responseFromCache = await caches.match(request);
-    if (responseFromCache) {
-        return responseFromCache;
-    }
-
     try {
         const responseFromNetwork = await fetch(request.clone());
         putInCache(request, responseFromNetwork.clone());
         return responseFromNetwork;
     } catch (error) {
-        return new Response('Network error happened', {
-            status: 408,
-            headers: { 'Content-Type': 'text/plain' },
-        });
+        const responseFromCache = await caches.match(request);
+        if (responseFromCache) {
+            return responseFromCache;
+        } else {
+            return new Response('Unavailable from cache', {
+                status: 408,
+                headers: { 'Content-Type': 'text/plain' },
+            });
+        }
     }
 };
 
