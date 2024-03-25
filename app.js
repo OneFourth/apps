@@ -2,7 +2,7 @@ const registerServiceWorker = async () => {
     if ("serviceWorker" in navigator) {
         try {
             const registration = await navigator.serviceWorker.register("/apps/sw.js", {
-                scope: "/apps",
+                scope: "/apps/",
             });
             if (registration.installing) {
                 console.log("Service worker installing");
