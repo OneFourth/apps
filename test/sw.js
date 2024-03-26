@@ -1,20 +1,25 @@
 const addResourcesToCache = async (resources) => {
-    const cache = await caches.open('v1');
+    const cache = await caches.open('test');
     await cache.addAll(resources);
 };
 
 const putInCache = async (request, response) => {
-    const cache = await caches.open('v1');
+    const cache = await caches.open('test');
     await cache.put(request, response);
 };
 
-const cacheFirst = async ({ request, preloadResponsePromise }) => {
+const cacheStrategy = async ({ request, preloadResponsePromise }) => {
     try {
         const responseFromNetwork = await fetch(request.clone());
-        putInCache(request, responseFromNetwork.clone());
+
+        if (responseFromNetwork.ok) {
+            putInCache(request, responseFromNetwork.clone());
+        }
+
         return responseFromNetwork;
     } catch (error) {
         const responseFromCache = await caches.match(request);
+
         if (responseFromCache) {
             return responseFromCache;
         } else {
@@ -29,20 +34,19 @@ const cacheFirst = async ({ request, preloadResponsePromise }) => {
 self.addEventListener('install', (event) => {
     event.waitUntil(
         addResourcesToCache([
-            '/apps/',
-            '/apps/app.js',
-            '/apps/images/icons-192.png',
-            '/apps/images/icons-512.png',
-            '/apps/index.html',
-            '/apps/styles.css',
-            '/apps/manifest.json',
+            '.',
+            './app.js',
+            './images/icons-192.png',
+            './images/icons-512.png',
+            './index.html',
+            './manifest.json',
         ])
     );
 });
 
 self.addEventListener('fetch', (event) => {
     event.respondWith(
-        cacheFirst({
+        cacheStrategy({
             request: event.request,
             preloadResponsePromise: event.preloadResponse,
         })
